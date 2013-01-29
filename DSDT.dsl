@@ -2240,7 +2240,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                 Add (Subtract (M1MX, M1MN), One, M1LN)
                 If (LOr (LEqual (MM64, Zero), LLessEqual (OSYS, 0x07D3)))
                 {
-                    CreateDWordField (BUF0, \_SB.PCI0._Y0F._LEN, MSLN)
+                    CreateQWordField (BUF0, \_SB.PCI0._Y0F._LEN, MSLN)
                     Store (Zero, MSLN)
                 }
                 Else
@@ -3256,7 +3256,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                             0x0000,             // Range Minimum
                             0x0000,             // Range Maximum
                             0x00,               // Alignment
-                            0x00,               // Length
+/*FixMe: Is this correct?*/ 0x02,               // Length
                             )
                         IO (Decode16,
                             0x0000,             // Range Minimum
@@ -3323,7 +3323,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                     Mutex (MUT0, 0x00)
                     Method (ENFG, 1, NotSerialized)
                     {
-                        Acquire (MUT0, 0x0FFF)
+                        Acquire (MUT0, 0xFFFF)
                         Store (0x87, INDX)
                         Store (0x87, INDX)
                         Store (Arg0, LDN)
@@ -5880,9 +5880,9 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                         /* 0008 */   0xBD, 0x0C, 0xBA, 0x90, 0xA1, 0xEC, 0x72, 0xF8
                                     }))
                             {
-                                Name (_T_0, Zero)
-                                Store (ToInteger (Arg2), _T_0)
-                                If (LEqual (_T_0, Zero))
+                                Name (T_0, Zero)
+                                Store (ToInteger (Arg2), T_0)
+                                If (LEqual (T_0, Zero))
                                 {
                                     If (LEqual (Arg1, One))
                                     {
@@ -5901,7 +5901,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                 }
                                 Else
                                 {
-                                    If (LEqual (_T_0, One))
+                                    If (LEqual (T_0, One))
                                     {
                                         If (LEqual (SDGV, 0xFF))
                                         {
@@ -5914,7 +5914,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                     }
                                     Else
                                     {
-                                        If (LEqual (_T_0, 0x02))
+                                        If (LEqual (T_0, 0x02))
                                         {
                                             Return (SDGV)
                                         }
@@ -5959,9 +5959,9 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                         /* 0008 */   0xBD, 0x0C, 0xBA, 0x90, 0xA1, 0xEC, 0x72, 0xF8
                                     }))
                             {
-                                Name (_T_0, Zero)
-                                Store (ToInteger (Arg2), _T_0)
-                                If (LEqual (_T_0, Zero))
+                                Name (T_0, Zero)
+                                Store (ToInteger (Arg2), T_0)
+                                If (LEqual (T_0, Zero))
                                 {
                                     If (LEqual (Arg1, One))
                                     {
@@ -5980,7 +5980,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                 }
                                 Else
                                 {
-                                    If (LEqual (_T_0, One))
+                                    If (LEqual (T_0, One))
                                     {
                                         If (LEqual (SDGV, 0xFF))
                                         {
@@ -5993,7 +5993,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                     }
                                     Else
                                     {
-                                        If (LEqual (_T_0, 0x02))
+                                        If (LEqual (T_0, 0x02))
                                         {
                                             Return (SDGV)
                                         }
@@ -6038,9 +6038,9 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                         /* 0008 */   0xBD, 0x0C, 0xBA, 0x90, 0xA1, 0xEC, 0x72, 0xF8
                                     }))
                             {
-                                Name (_T_0, Zero)
-                                Store (ToInteger (Arg2), _T_0)
-                                If (LEqual (_T_0, Zero))
+                                Name (T_0, Zero)
+                                Store (ToInteger (Arg2), T_0)
+                                If (LEqual (T_0, Zero))
                                 {
                                     If (LEqual (Arg1, One))
                                     {
@@ -6059,7 +6059,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                 }
                                 Else
                                 {
-                                    If (LEqual (_T_0, One))
+                                    If (LEqual (T_0, One))
                                     {
                                         If (LEqual (SDGV, 0xFF))
                                         {
@@ -6072,7 +6072,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                     }
                                     Else
                                     {
-                                        If (LEqual (_T_0, 0x02))
+                                        If (LEqual (T_0, 0x02))
                                         {
                                             Return (SDGV)
                                         }
@@ -6117,9 +6117,9 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                         /* 0008 */   0xBD, 0x0C, 0xBA, 0x90, 0xA1, 0xEC, 0x72, 0xF8
                                     }))
                             {
-                                Name (_T_0, Zero)
-                                Store (ToInteger (Arg2), _T_0)
-                                If (LEqual (_T_0, Zero))
+                                Name (T_0, Zero)
+                                Store (ToInteger (Arg2), T_0)
+                                If (LEqual (T_0, Zero))
                                 {
                                     If (LEqual (Arg1, One))
                                     {
@@ -6138,7 +6138,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                 }
                                 Else
                                 {
-                                    If (LEqual (_T_0, One))
+                                    If (LEqual (T_0, One))
                                     {
                                         If (LEqual (SDGV, 0xFF))
                                         {
@@ -6151,7 +6151,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                     }
                                     Else
                                     {
-                                        If (LEqual (_T_0, 0x02))
+                                        If (LEqual (T_0, 0x02))
                                         {
                                             Return (SDGV)
                                         }
@@ -6314,9 +6314,9 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                         /* 0008 */   0xBD, 0x0C, 0xBA, 0x90, 0xA1, 0xEC, 0x72, 0xF8
                                     }))
                             {
-                                Name (_T_0, Zero)
-                                Store (ToInteger (Arg2), _T_0)
-                                If (LEqual (_T_0, Zero))
+                                Name (T_0, Zero)
+                                Store (ToInteger (Arg2), T_0)
+                                If (LEqual (T_0, Zero))
                                 {
                                     If (LEqual (Arg1, One))
                                     {
@@ -6335,7 +6335,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                 }
                                 Else
                                 {
-                                    If (LEqual (_T_0, One))
+                                    If (LEqual (T_0, One))
                                     {
                                         If (LEqual (SDGV, 0xFF))
                                         {
@@ -6348,7 +6348,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                     }
                                     Else
                                     {
-                                        If (LEqual (_T_0, 0x02))
+                                        If (LEqual (T_0, 0x02))
                                         {
                                             Return (SDGV)
                                         }
@@ -6393,9 +6393,9 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                         /* 0008 */   0xBD, 0x0C, 0xBA, 0x90, 0xA1, 0xEC, 0x72, 0xF8
                                     }))
                             {
-                                Name (_T_0, Zero)
-                                Store (ToInteger (Arg2), _T_0)
-                                If (LEqual (_T_0, Zero))
+                                Name (T_0, Zero)
+                                Store (ToInteger (Arg2), T_0)
+                                If (LEqual (T_0, Zero))
                                 {
                                     If (LEqual (Arg1, One))
                                     {
@@ -6414,7 +6414,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                 }
                                 Else
                                 {
-                                    If (LEqual (_T_0, One))
+                                    If (LEqual (T_0, One))
                                     {
                                         If (LEqual (SDGV, 0xFF))
                                         {
@@ -6427,7 +6427,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                     }
                                     Else
                                     {
-                                        If (LEqual (_T_0, 0x02))
+                                        If (LEqual (T_0, 0x02))
                                         {
                                             Return (SDGV)
                                         }
@@ -7417,51 +7417,51 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
     Method (UXDV, 1, NotSerialized)
     {
         Store (0xFF, Local0)
-        Name (_T_0, Zero)
-        Store (Add (Arg0, Zero), _T_0)
-        If (LEqual (_T_0, 0x03F8))
+        Name (T_0, Zero)
+        Store (Add (Arg0, Zero), T_0)
+        If (LEqual (T_0, 0x03F8))
         {
             Store (Zero, Local0)
         }
         Else
         {
-            If (LEqual (_T_0, 0x02F8))
+            If (LEqual (T_0, 0x02F8))
             {
                 Store (One, Local0)
             }
             Else
             {
-                If (LEqual (_T_0, 0x0220))
+                If (LEqual (T_0, 0x0220))
                 {
                     Store (0x02, Local0)
                 }
                 Else
                 {
-                    If (LEqual (_T_0, 0x0228))
+                    If (LEqual (T_0, 0x0228))
                     {
                         Store (0x03, Local0)
                     }
                     Else
                     {
-                        If (LEqual (_T_0, 0x0238))
+                        If (LEqual (T_0, 0x0238))
                         {
                             Store (0x04, Local0)
                         }
                         Else
                         {
-                            If (LEqual (_T_0, 0x02E8))
+                            If (LEqual (T_0, 0x02E8))
                             {
                                 Store (0x05, Local0)
                             }
                             Else
                             {
-                                If (LEqual (_T_0, 0x0338))
+                                If (LEqual (T_0, 0x0338))
                                 {
                                     Store (0x06, Local0)
                                 }
                                 Else
                                 {
-                                    If (LEqual (_T_0, 0x03E8))
+                                    If (LEqual (T_0, 0x03E8))
                                     {
                                         Store (0x07, Local0)
                                     }
@@ -7476,9 +7476,9 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
     }
     Method (RRIO, 4, NotSerialized)
     {
-        Name (_T_0, Zero)
-        Store (Add (Arg0, Zero), _T_0)
-        If (LEqual (_T_0, Zero))
+        Name (T_0, Zero)
+        Store (Add (Arg0, Zero), T_0)
+        If (LEqual (T_0, Zero))
         {
             Store (Zero, CALE)
             Store (UXDV (Arg2), Local0)
@@ -7493,7 +7493,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
         }
         Else
         {
-            If (LEqual (_T_0, One))
+            If (LEqual (T_0, One))
             {
                 Store (Zero, CBLE)
                 Store (UXDV (Arg2), Local0)
@@ -7508,7 +7508,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
             }
             Else
             {
-                If (LEqual (_T_0, 0x02))
+                If (LEqual (T_0, 0x02))
                 {
                     Store (Zero, LTLE)
                     If (LEqual (Arg2, 0x0378))
@@ -7530,7 +7530,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                 }
                 Else
                 {
-                    If (LEqual (_T_0, 0x03))
+                    If (LEqual (T_0, 0x03))
                     {
                         Store (Zero, FDLE)
                         If (LEqual (Arg2, 0x03F0))
@@ -7548,7 +7548,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                     }
                     Else
                     {
-                        If (LEqual (_T_0, 0x08))
+                        If (LEqual (T_0, 0x08))
                         {
                             If (LEqual (Arg2, 0x0200))
                             {
@@ -7575,7 +7575,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                         }
                         Else
                         {
-                            If (LEqual (_T_0, 0x09))
+                            If (LEqual (T_0, 0x09))
                             {
                                 If (LEqual (Arg2, 0x0200))
                                 {
@@ -7602,7 +7602,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                             }
                             Else
                             {
-                                If (LEqual (_T_0, 0x0A))
+                                If (LEqual (T_0, 0x0A))
                                 {
                                     If (LOr (LEqual (Arg2, 0x60), LEqual (Arg2, 0x64)))
                                     {
@@ -7618,7 +7618,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                 }
                                 Else
                                 {
-                                    If (LEqual (_T_0, 0x0B))
+                                    If (LEqual (T_0, 0x0B))
                                     {
                                         If (LOr (LEqual (Arg2, 0x62), LEqual (Arg2, 0x66)))
                                         {
@@ -7634,7 +7634,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                     }
                                     Else
                                     {
-                                        If (LEqual (_T_0, 0x0C))
+                                        If (LEqual (T_0, 0x0C))
                                         {
                                             If (LEqual (Arg2, 0x2E))
                                             {
@@ -7661,7 +7661,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                                         }
                                         Else
                                         {
-                                            If (LEqual (_T_0, 0x0D))
+                                            If (LEqual (T_0, 0x0D))
                                             {
                                                 If (LEqual (Arg2, 0x2E))
                                                 {
