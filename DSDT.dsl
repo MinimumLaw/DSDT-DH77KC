@@ -2895,9 +2895,11 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                 Device (HPET)
                 {
                     Name (_HID, EisaId ("PNP0103"))
-                    Name (_UID, Zero)
+                    Name (_CID, EisaId ("PNP0C01"))
                     Name (BUF0, ResourceTemplate ()
                     {
+                        IRQNoFlags ()
+                            {0,8}
                         Memory32Fixed (ReadWrite,
                             0xFED00000,         // Address Base
                             0x00000400,         // Address Length
@@ -3180,8 +3182,6 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                             0x01,               // Alignment
                             0x08,               // Length
                             )
-                        IRQNoFlags ()
-                            {8}
                     })
                 }
                 Device (TIMR)
@@ -3201,8 +3201,6 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                             0x10,               // Alignment
                             0x04,               // Length
                             )
-                        IRQNoFlags ()
-                            {0}
                     })
                 }
                 Device (CWDT)
@@ -9697,9 +9695,13 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
     {
         Method (_INI, 0, NotSerialized)
         {
-            Store (0x07D0, OSYS)
+            Store (0x07DC, OSYS) /* Default - Windows 8, like iMac13,1 */
             If (CondRefOf (_OSI, Local0))
             {
+                If (_OSI ("Darin"))
+                {
+                    Store (0x2710, OSYS)
+                }
                 If (_OSI ("Windows 2001"))
                 {
                     Store (0x07D1, OSYS)
