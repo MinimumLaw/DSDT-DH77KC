@@ -3254,12 +3254,6 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                             0x0000,             // Range Minimum
                             0x0000,             // Range Maximum
                             0x00,               // Alignment
-/*FixMe: Is this correct?*/ 0x02,               // Length
-                            )
-                        IO (Decode16,
-                            0x0000,             // Range Minimum
-                            0x0000,             // Range Maximum
-                            0x00,               // Alignment
                             0x00,               // Length
                             _Y13)
                     })
