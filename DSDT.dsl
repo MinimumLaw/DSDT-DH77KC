@@ -3477,6 +3477,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                         RRIO (Arg0, Arg1, Local1, 0x08)
                         EXFG ()
                     }
+/* Resource template fill functions #1 */
                     Name (CRS1, ResourceTemplate ()
                     {
                         IO (Decode16,
@@ -3495,54 +3496,13 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                     CreateWordField (CRS1, \_SB.PCI0.LPCB.SIO1._Y16._MIN, IO11)
                     CreateWordField (CRS1, \_SB.PCI0.LPCB.SIO1._Y16._MAX, IO12)
                     CreateByteField (CRS1, \_SB.PCI0.LPCB.SIO1._Y16._LEN, LEN1)
-                    Name (CRS2, ResourceTemplate ()
-                    {
-                        IO (Decode16,
-                            0x0000,             // Range Minimum
-                            0x0000,             // Range Maximum
-                            0x01,               // Alignment
-                            0x00,               // Length
-                            _Y19)
-                        IO (Decode16,
-                            0x0000,             // Range Minimum
-                            0x0000,             // Range Maximum
-                            0x01,               // Alignment
-                            0x00,               // Length
-                            _Y1A)
-                        IRQNoFlags (_Y17)
-                            {}
-                        DMA (Compatibility, NotBusMaster, Transfer8, _Y18)
-                            {2}
-                    })
-                    CreateWordField (CRS2, \_SB.PCI0.LPCB.SIO1._Y17._INT, IRQE)
-                    CreateByteField (CRS2, \_SB.PCI0.LPCB.SIO1._Y18._DMA, DMAE)
-                    CreateWordField (CRS2, \_SB.PCI0.LPCB.SIO1._Y19._MIN, IO21)
-                    CreateWordField (CRS2, \_SB.PCI0.LPCB.SIO1._Y19._MAX, IO22)
-                    CreateByteField (CRS2, \_SB.PCI0.LPCB.SIO1._Y19._LEN, LEN2)
-                    CreateWordField (CRS2, \_SB.PCI0.LPCB.SIO1._Y1A._MIN, IO31)
-                    CreateWordField (CRS2, \_SB.PCI0.LPCB.SIO1._Y1A._MAX, IO32)
-                    CreateByteField (CRS2, \_SB.PCI0.LPCB.SIO1._Y1A._LEN, LEN3)
-                    Name (CRS4, ResourceTemplate ()
-                    {
-                        IO (Decode16,
-                            0x0000,             // Range Minimum
-                            0x0000,             // Range Maximum
-                            0x01,               // Alignment
-                            0x00,               // Length
-                            _Y1C)
-                        IRQ (Edge, ActiveLow, Shared, _Y1B)
-                            {}
-                    })
-                    CreateWordField (CRS4, \_SB.PCI0.LPCB.SIO1._Y1B._INT, IRQL)
-                    CreateWordField (CRS4, \_SB.PCI0.LPCB.SIO1._Y1C._MIN, IOHL)
-                    CreateWordField (CRS4, \_SB.PCI0.LPCB.SIO1._Y1C._MAX, IORL)
-                    CreateByteField (CRS4, \_SB.PCI0.LPCB.SIO1._Y1C._ALN, ALMN)
-                    CreateByteField (CRS4, \_SB.PCI0.LPCB.SIO1._Y1C._LEN, LENG)
                     Method (DCRS, 2, NotSerialized)
                     {
                         ENFG (CGLD (Arg0))
                         ShiftLeft (IOAH, 0x08, IO11)
-                        Or (IOAL, IO11, IO11)
+                        Store (IOAL, IO12)
+                        And (IO12, 0xFF, IO12)
+                        Or (IO12, IO11, IO11)
                         Store (IO11, IO12)
                         Store (0x08, LEN1)
                         If (INTR)
@@ -3565,58 +3525,8 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                         EXFG ()
                         Return (CRS1)
                     }
-                    Method (DCR2, 2, NotSerialized)
-                    {
-                        ENFG (CGLD (Arg0))
-                        ShiftLeft (IOAH, 0x08, IO21)
-                        Or (IOAL, IO21, IO21)
-                        Store (IO21, IO22)
-                        Store (0x08, LEN2)
-                        ShiftLeft (IOH2, 0x08, IO31)
-                        Or (IOL2, IO31, IO31)
-                        Store (IO21, IO32)
-                        Store (0x08, LEN3)
-                        If (INTR)
-                        {
-                            ShiftLeft (One, INTR, IRQE)
-                        }
-                        Else
-                        {
-                            Store (Zero, IRQE)
-                        }
-                        If (LOr (LGreater (DMCH, 0x03), LEqual (Arg1, Zero)))
-                        {
-                            Store (Zero, DMAE)
-                        }
-                        Else
-                        {
-                            And (DMCH, 0x03, Local1)
-                            ShiftLeft (One, Local1, DMAE)
-                        }
-                        EXFG ()
-                        Return (CRS2)
-                    }
-                    Method (DCR4, 2, NotSerialized)
-                    {
-                        ENFG (CGLD (Arg0))
-                        ShiftLeft (IOAH, 0x08, IOHL)
-                        Or (IOAL, IOHL, IOHL)
-                        Store (IOHL, IORL)
-                        Store (0x08, LENG)
-                        If (INTR)
-                        {
-                            And (INTR, 0x0F, INTR)
-                            ShiftLeft (One, INTR, IRQL)
-                        }
-                        Else
-                        {
-                            Store (Zero, IRQL)
-                        }
-                        EXFG ()
-                        Return (CRS4)
-                    }
                     Method (DSRS, 2, NotSerialized)
-                    {
+                    {                        
                         If (LEqual (Arg1, 0x02))
                         {
                             If (LPTM (CGLD (Arg1)))
@@ -3659,6 +3569,69 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                             }
                         }
                     }
+/* Resource template fill functions #2 */
+                    Name (CRS2, ResourceTemplate ()
+                    {
+                        IO (Decode16,
+                            0x0000,             // Range Minimum
+                            0x0000,             // Range Maximum
+                            0x01,               // Alignment
+                            0x00,               // Length
+                            _Y19)
+                        IO (Decode16,
+                            0x0000,             // Range Minimum
+                            0x0000,             // Range Maximum
+                            0x01,               // Alignment
+                            0x00,               // Length
+                            _Y1A)
+                        IRQNoFlags (_Y17)
+                            {}
+                        DMA (Compatibility, NotBusMaster, Transfer8, _Y18)
+                            {2}
+                    })
+                    CreateWordField (CRS2, \_SB.PCI0.LPCB.SIO1._Y17._INT, IRQE)
+                    CreateByteField (CRS2, \_SB.PCI0.LPCB.SIO1._Y18._DMA, DMAE)
+                    CreateWordField (CRS2, \_SB.PCI0.LPCB.SIO1._Y19._MIN, IO21)
+                    CreateWordField (CRS2, \_SB.PCI0.LPCB.SIO1._Y19._MAX, IO22)
+                    CreateByteField (CRS2, \_SB.PCI0.LPCB.SIO1._Y19._LEN, LEN2)
+                    CreateWordField (CRS2, \_SB.PCI0.LPCB.SIO1._Y1A._MIN, IO31)
+                    CreateWordField (CRS2, \_SB.PCI0.LPCB.SIO1._Y1A._MAX, IO32)
+                    CreateByteField (CRS2, \_SB.PCI0.LPCB.SIO1._Y1A._LEN, LEN3)
+                    Method (DCR2, 2, NotSerialized)
+                    {
+                        ENFG (CGLD (Arg0))
+                        ShiftLeft (IOAH, 0x08, IO21)
+                        Store (IOAL, IO22)
+                        And (IO22, 0xFF, IO22)
+                        Or (IO22, IO21, IO21)
+                        Store (IO21, IO22)
+                        Store (0x08, LEN2)
+                        ShiftLeft (IOH2, 0x08, IO31)
+                        Store (IOL2, IO32)
+                        And (IO32, 0xFF, IO32)
+                        Or (IO32, IO31, IO31)
+                        Store (IO31, IO32)
+                        Store (0x08, LEN3)
+                        If (INTR)
+                        {
+                            ShiftLeft (One, INTR, IRQE)
+                        }
+                        Else
+                        {
+                            Store (Zero, IRQE)
+                        }
+                        If (LOr (LGreater (DMCH, 0x03), LEqual (Arg1, Zero)))
+                        {
+                            Store (Zero, DMAE)
+                        }
+                        Else
+                        {
+                            And (DMCH, 0x03, Local1)
+                            ShiftLeft (One, Local1, DMAE)
+                        }
+                        EXFG ()
+                        Return (CRS2)
+                    }
                     Method (DSR2, 2, NotSerialized)
                     {
                         CreateWordField (Arg0, 0x11, IRQT)
@@ -3696,6 +3669,44 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                             Subtract (Local2, One, Local2)
                         }
                     }
+/* Resource template fill functions #3 */
+                    Name (CRS4, ResourceTemplate ()
+                    {
+                        IO (Decode16,
+                            0x0000,             // Range Minimum
+                            0x0000,             // Range Maximum
+                            0x01,               // Alignment
+                            0x00,               // Length
+                            _Y1C)
+                        IRQ (Edge, ActiveLow, Shared, _Y1B)
+                            {}
+                    })
+                    CreateWordField (CRS4, \_SB.PCI0.LPCB.SIO1._Y1B._INT, IRQL)
+                    CreateWordField (CRS4, \_SB.PCI0.LPCB.SIO1._Y1C._MIN, IOHL)
+                    CreateWordField (CRS4, \_SB.PCI0.LPCB.SIO1._Y1C._MAX, IORL)
+                    CreateByteField (CRS4, \_SB.PCI0.LPCB.SIO1._Y1C._ALN, ALMN)
+                    CreateByteField (CRS4, \_SB.PCI0.LPCB.SIO1._Y1C._LEN, LENG)
+                    Method (DCR4, 2, NotSerialized)
+                    {
+                        ENFG (CGLD (Arg0))
+                        ShiftLeft (IOAH, 0x08, IOHL)
+                        Store (IOAL, IORL)
+                        And (IORL, 0xFF, IORL)
+                        Or (IORL, IOHL, IOHL)
+                        Store (IOHL, IORL)
+                        Store (0x08, LENG)
+                        If (INTR)
+                        {
+                            And (INTR, 0x0F, INTR)
+                            ShiftLeft (One, INTR, IRQL)
+                        }
+                        Else
+                        {
+                            Store (Zero, IRQL)
+                        }
+                        EXFG ()
+                        Return (CRS4)
+                    }
                     Method (DSR4, 2, NotSerialized)
                     {
                         CreateWordField (Arg0, 0x02, IOHL)
@@ -3721,6 +3732,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                         }
                     }
                 }
+/* Resource fill function finish */
                 Name (PMFG, Zero)
                 Method (SIOS, 1, NotSerialized)
                 {
