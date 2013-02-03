@@ -3507,7 +3507,9 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                         Store (0x08, LEN1)
                         If (INTR)
                         {
-                            ShiftLeft (One, INTR, IRQM)
+                            Store (INTR, IRQM)
+                            And (IRQM, 0xFF, IRQM)
+                            ShiftLeft (One, IRQM, IRQM)
                         }
                         Else
                         {
@@ -3614,7 +3616,9 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                         Store (0x08, LEN3)
                         If (INTR)
                         {
-                            ShiftLeft (One, INTR, IRQE)
+                            Store (INTR, IRQE)
+                            And (IRQE, 0xFF, IRQE)
+                            ShiftLeft (One, IRQE, IRQE)
                         }
                         Else
                         {
@@ -3697,8 +3701,9 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "INTEL ", "DH77KC  ", 0x0000006A)
                         Store (0x08, LENG)
                         If (INTR)
                         {
-                            And (INTR, 0x0F, INTR)
-                            ShiftLeft (One, INTR, IRQL)
+                            Store (INTR, IRQL)
+                            And (IRQL, 0x0F, IRQL)
+                            ShiftLeft (One, IRQL, IRQL)
                         }
                         Else
                         {
